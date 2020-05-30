@@ -1,4 +1,4 @@
-# L-O-T Discord Bot
+# L-o-T Discord Bot
 This is the home of my Discord bot, Luck-o-Tron.
 
 It can roll dice for you as many times as you want, and with a specified amount of sides (up to 9999).

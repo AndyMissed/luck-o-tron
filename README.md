@@ -12,3 +12,7 @@ At the moment, it isn't a very useful bot, but it is a nice first hobby project 
 In the near future, this bot will hopefully be hosted 24/7 and potentially be made public.
 
 I will be sure to update this as things change.
+# Dependencies
+This bot utilizes dotenv to fetch sensitive information (My bot's token) from a '.env' file.
+
+This bot also makes use of 'discord.py'.

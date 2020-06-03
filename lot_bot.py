@@ -145,8 +145,8 @@ async def d20(chat, n_dice: str = '1', n_luck: str = '0'):
     await chat.send(f'```"{n_luck}" is not a valid number.```')
     error = 1
   if error == 0:
-    if -20 > n_luck > 20 or 1 > n_dice > 100:
-      if -20 > n_luck > 20:
+    if not -20 <= n_luck <= 20 or not 1 <= n_dice <= 100:
+      if not -20 <= n_luck <= 20:
         await chat.send("```Luck must be within −20 to 20.```")
       if n_dice > 100:
         await chat.send("```Dice must be within 1 to 100.```")
@@ -187,7 +187,7 @@ async def roll(chat, n_sides: str = '6', n_dice: str = '1', n_luck: str = '0'):
     await chat.send(f'```"{n_luck}" is not a valid number.```')
     error = 1
   if error == 0:
-    if n_sides*-1 > n_luck > n_sides or 1 > n_sides > 9999 or 1 > n_dice > 100:
+    if not n_sides*-1 <= n_luck <= n_sides or not 1 <= n_sides <= 9999 or not 1 <= n_dice <= 100:
       if (n_luck > n_sides or n_luck < (n_sides*-1)) and n_sides > 1:
         await chat.send(f"```Luck must be within −{n_sides} to {n_sides}.```")
       if n_sides > 9999:

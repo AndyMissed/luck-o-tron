@@ -1,5 +1,5 @@
 # Code for Luck-o-Tron Discord bot
-# Version 1.0.0
+# Version 1.0.1
 # Copyright © 2020 AndyMissed
 
 import os
@@ -86,18 +86,31 @@ def rng(sides, luck):
     if luck > 0:
       return output
     elif luck < 0:
-      return (sides+1)-output  # Hacky code that 'inverts' the result for negative values of luck
+      return (sides+1)-output  # Hacky code that 'inverts' the result for negative values of luck.
 
 @bot.command()
 async def help(chat, word = str()):
-  a = 'Rolls a 20-sided die.'
-  b = 'Rolls a die with a specified amount of sides. Defaults to 6 if no sides specified.'
-  c = 'Controls the randomness of a roll.'
-  d = 'For more information about a specific command or feature, use:\n"%help [command/feature]"'
-  e = 'Example command:\n"%roll 25 10 20"'
-  s = '<---------->'
-  l_desc = (
-    'Description:\n<---------->\nLuck is a value that modifies the randomness of a roll.\n\n'+
+  s = '<---------->'  # Separator
+  help_desc = (
+    'Commands:\n'+
+    f'{s}\n'+
+    '"d20":\n'+
+    'Rolls a 20-sided die.\n'+
+    '"roll":\n'+
+    'Rolls a die with a specified amount of sides. Defaults to 6 if no sides specified.\n'+
+    f'{s}\n'+
+    'Features:\n'+
+    f'{s}\n'+
+    'luck:\n'+
+    'Controls the randomness of a roll.\n'+
+    f'{s}\n\n'+
+    'For more information about a specific command or feature, use:\n'+
+    '"%help [command/feature]"\n\n'+
+    'Example command:\n'+
+    '"%roll 25 10 20"'
+    )
+  luck_desc = (
+    f'Description:\n{s}\nLuck is a value that modifies the randomness of a roll.\n\n'+
     'If the value of luck is 0 (Default), rolls behave normally.\n\nAs the value of luck increases '+
     '(Up to a maximum of [the # of sides]), low numbers become rolled less frequently.\n\n'+
     'As the value of luck decreases, high numbers become rolled less frequently.\n'+
@@ -105,18 +118,18 @@ async def help(chat, word = str()):
     'In essence, your average roll gets lower with lower luck, and gets higher with higher luck.\n\n'+
     'As an example, if you have a d20 with 20 luck (maximum luck), the odds of rolling a 1 '+
     'is essentially reduced to 1 out of every 8000 rolls.\n'+
-    '<---------->'
+    f'{s}'
     )
   if word == 'd20':
     await chat.send(f'```Usage:\n{s}\nd20 [# of dice] [# of luck]\n{s}```')
   elif word == 'roll':
     await chat.send(f'```Usage:\n{s}\nroll [# of sides] [# of dice] [# of luck]\n{s}```')
   elif word == 'luck':
-    await chat.send(f'```{l_desc}```')
+    await chat.send(f'```{luck_desc}```')
   elif word != '':
     await chat.send(f'```"{word}" is not a recognized command or feature.```')
   else:
-    await chat.send(f'```Commands:\n{s}\n"d20":\n{a}\n"roll":\n{b}\n{s}\nFeatures:\n{s}\nluck:\n{c}\n{s}\n\n{d}\n\n{e}```')
+    await chat.send(f'```{help_desc}```')
 
 @bot.command()
 async def d20(chat, n_dice: str = '1', n_luck: str = '0'):
@@ -132,8 +145,8 @@ async def d20(chat, n_dice: str = '1', n_luck: str = '0'):
     await chat.send(f'```"{n_luck}" is not a valid number.```')
     error = 1
   if error == 0:
-    if -20 > n_luck > 20 or 1 > n_dice > 100:
-      if -20 > n_luck > 20:
+    if not -20 <= n_luck <= 20 or not 1 <= n_dice <= 100:
+      if not -20 <= n_luck <= 20:
         await chat.send("```Luck must be within −20 to 20.```")
       if n_dice > 100:
         await chat.send("```Dice must be within 1 to 100.```")
@@ -174,7 +187,7 @@ async def roll(chat, n_sides: str = '6', n_dice: str = '1', n_luck: str = '0'):
     await chat.send(f'```"{n_luck}" is not a valid number.```')
     error = 1
   if error == 0:
-    if n_sides*-1 > n_luck > n_sides or 1 > n_sides > 9999 or 1 > n_dice > 100:
+    if not n_sides*-1 <= n_luck <= n_sides or not 1 <= n_sides <= 9999 or not 1 <= n_dice <= 100:
       if (n_luck > n_sides or n_luck < (n_sides*-1)) and n_sides > 1:
         await chat.send(f"```Luck must be within −{n_sides} to {n_sides}.```")
       if n_sides > 9999:
